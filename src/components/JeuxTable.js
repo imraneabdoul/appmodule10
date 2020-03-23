@@ -10,30 +10,56 @@ class JeuxTable extends Component{
     constructor(props){
         super(props);
     }
-  render(){
-      const rows = [];
-      const categories = [];
-      this.props.jeux.forEach(jeu => {
-          rows.push(<JeuxRow key={jeu.name} jeu={jeu.name} price={jeu.price} stocked={jeu.stocked} />);
-          categories.push(jeu.category);
+
+    removeDuplicates = (colors) =>{
+      let unique = {};
+      colors.forEach(function(i) {
+        if(!unique[i]) {
+          unique[i] = true;
+        }
       });
+      return Object.keys(unique);
+    }
+
+
+  render(){
+        const filterText = this.props.filterText;
+        const inStock = this.props.inStockOnly;
+        const rows = [];
+        const allCategories = [];
+        this.props.jeux.forEach(element => {
+          allCategories.push(element.category);
+        });
+
+        const mesCategories = this.removeDuplicates(allCategories)
+
+        for(let j =0;j<mesCategories.length;j++){
+          rows.push(<JeuxCategory key={"jeuxcatego"+j} categorie={mesCategories[j]}/>);
+
+          this.props.jeux.forEach(element => {
+            if(element.category == mesCategories[j]){
+              if(element.name.indexOf(filterText) == -1){
+                    return;
+                }
+                if(inStock && !element.stocked){
+                    return;
+                }
+                  rows.push(<JeuxRow key={element.name} name={element.name} price={element.price} stock={element.stocked}/>);
+            }
+          });
+
+        }
       
     return (
-      <div style={{"backgroundColor":"green"}}>
-        <table>
-            <thead>
-            <JeuxCategory category="Test"/>
-                <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                </tr>
-            </thead>
-            {rows /* bouclé automatiquement */} 
-            {categories}
-        </table>
-        
-      </div>
+      <table style={{"backgroundColor":"green"}}>
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Price</td>
+          </tr>
+        </thead>
+        {rows}
+      </table>
     )
   }
 }

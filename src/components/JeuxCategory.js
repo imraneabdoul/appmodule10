@@ -10,9 +10,11 @@ class JeuxCategory extends Component{
     }
   render(){
     return (
-      <tr>
-       <th colSpan="2">{this.props.category}</th> 
-      </tr>
+      <thead>
+        <tr>
+          <td style={{"backgroundColor":"brown"}}>{this.props.categorie}</td>
+        </tr>
+    </thead>
     )
   }
 }

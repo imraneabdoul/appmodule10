@@ -10,10 +10,12 @@ class JeuxRow extends Component{
     }
   render(){
     return (
-      <tr>
-          {this.props.stocked == true ? <td>{this.props.jeu}</td>: <td style={{"color":"red"}}>{this.props.jeu}</td>}
+      <thead>
+        <tr>
+          {this.props.stock === true? <td>{this.props.name}</td>:<td style={{"color":"red"}}>{this.props.name}</td>}
           <td>{this.props.price}</td>
-      </tr>
+        </tr>
+      </thead>
     )
   }
 }
